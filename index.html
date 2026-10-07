@@ -194,6 +194,31 @@ h2.flash{background:linear-gradient(var(--red),var(--red)) 50% 100%/0 4px no-rep
 a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visible{border-radius:12px}
 .nav a,.cta a,button,.pb,.fn a,summary,.brand,#top,#lang{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 ::selection{background:var(--red);color:#fff}
+/* mobile header */
+.mn{display:none;width:44px;height:44px;flex:none;background:none;border:0;padding:0;border-radius:12px;position:relative;cursor:pointer}
+.mn span{position:absolute;inset-inline-start:11px;width:22px;height:2.5px;background:#fff;border-radius:2px;transition:transform .3s,opacity .2s,top .3s}
+.mn span:nth-child(1){top:14px}.mn span:nth-child(2){top:21px}.mn span:nth-child(3){top:28px}
+.mn.x span:nth-child(1){top:21px;transform:rotate(45deg)}
+.mn.x span:nth-child(2){opacity:0}
+.mn.x span:nth-child(3){top:21px;transform:rotate(-45deg)}
+.mn:focus-visible{outline:3px solid #fff;outline-offset:1px}
+@media(max-width:820px){
+header{gap:6px;padding-inline:12px}
+.brand{flex:1;min-width:0}
+.wm b{font-size:21px;white-space:nowrap}
+.wm i{display:none}
+.hf{width:40px;height:40px}
+#lang{padding:3px 14px;font-size:14px;flex:none}
+.mn{display:block}
+header .nav{position:absolute;inset-inline:0;top:100%;flex:none;flex-direction:column;align-items:stretch;gap:0;background:#0e0e0d;border-block-end:3px solid var(--red);padding:4px 18px 10px;max-height:0;overflow:hidden;opacity:0;visibility:hidden;transition:max-height .35s ease,opacity .25s,visibility .35s;font-size:18px;white-space:normal}
+header .nav.open{max-height:calc(100vh - 70px);overflow-y:auto;opacity:1;visibility:visible}
+header .nav a,header .nav a:first-child,header .nav a:last-child{margin:0;padding:13px 10px;opacity:1;border-block-end:1px solid #262626;border-radius:10px}
+header .nav a:last-child{border-block-end:0}
+header .nav a::after{display:none}
+header .nav a.on{background:rgba(255,255,255,.09);color:#fff;box-shadow:inset 4px 0 0 var(--red)}
+html[dir=rtl] header .nav a.on{box-shadow:inset -4px 0 0 var(--red)}
+}
+@media(prefers-reduced-motion:reduce){.mn span,header .nav{transition:none}}
 </style>
 </head>
 <body>
@@ -216,7 +241,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 <header>
 <div class="prog" aria-hidden="true"></div>
 <a class="brand" href="#" aria-label="فلسطين حرة | Free Palestine"><svg class="hf" aria-hidden="true"><use href="#i-logo"/></svg><span class="wm"><b><span class="ar">فلسطين حرة</span><span class="en">Free Palestine</span></b><i><span class="ar">FREE PALESTINE</span><span class="en">فلسطين حرة</span></i></span></a>
-<nav class="nav" aria-label="Main">
+<nav class="nav" id="nv" aria-label="Main">
 <a href="#cause"><span class="ar">القضية</span><span class="en">The Cause</span></a>
 <a href="#civ"><span class="ar">الحضارة</span><span class="en">Civilization</span></a>
 <a href="#sym"><span class="ar">الرموز</span><span class="en">Symbols</span></a>
@@ -225,6 +250,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 <a href="#src"><span class="ar">المصادر</span><span class="en">Sources</span></a>
 </nav>
 <button id="lang" aria-label="Switch language"><span class="ar">English</span><span class="en">العربية</span></button>
+<button class="mn" id="mn" type="button" aria-label="القائمة | Menu" aria-expanded="false" aria-controls="nv"><span></span><span></span><span></span></button>
 </header>
 
 <div class="hero">
@@ -540,6 +566,17 @@ var run=true,svg=g.ownerSVGElement;
 function loop(ms){if(run)draw(ms/1000);requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 if('IntersectionObserver'in window)new IntersectionObserver(function(e){run=e[0].isIntersecting}).observe(svg);
+})();
+</script>
+<script>
+(function(){
+var mn=document.getElementById('mn'),nv=document.getElementById('nv');if(!mn||!nv)return;
+function set(o){nv.classList.toggle('open',o);mn.classList.toggle('x',o);mn.setAttribute('aria-expanded',o?'true':'false')}
+mn.addEventListener('click',function(e){e.stopPropagation();set(!nv.classList.contains('open'))});
+nv.addEventListener('click',function(e){if(e.target.closest('a'))set(false)});
+document.addEventListener('click',function(e){if(nv.classList.contains('open')&&!e.target.closest('header'))set(false)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&nv.classList.contains('open')){set(false);mn.focus()}});
+addEventListener('resize',function(){if(innerWidth>820)set(false)});
 })();
 </script>
 </body>
