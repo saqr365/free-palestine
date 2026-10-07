@@ -188,6 +188,12 @@ h2.flash{background:linear-gradient(var(--red),var(--red)) 50% 100%/0 4px no-rep
 .mp .pb{font-size:14px;padding:6px 16px;background:none;cursor:pointer}
 .mp .x{position:absolute;inset-block-start:6px;inset-inline-start:10px;background:none;border:0;color:#fff;font-size:26px;line-height:1;cursor:pointer}
 .mp .x:focus-visible,.mp .pb:focus-visible{outline:3px solid #fff;outline-offset:2px}
+/* tap / focus polish */
+*{-webkit-tap-highlight-color:transparent}
+:focus:not(:focus-visible){outline:none}
+a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visible{border-radius:12px}
+.nav a,.cta a,button,.pb,.fn a,summary,.brand,#top,#lang{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+::selection{background:var(--red);color:#fff}
 </style>
 </head>
 <body>
